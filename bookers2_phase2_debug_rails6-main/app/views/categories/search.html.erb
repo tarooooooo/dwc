@@ -1,0 +1,17 @@
+<div class ="container px-5 px-sm-0">
+  <div class="row">
+    <div class ="col-md-3">
+
+      <%= render'users/list',user:@user %>
+      <%= render 'users/follow_btn' , user:@user %>
+      <%= render 'users/chat_btn' , user:@user %>
+      <%= render 'books/newbook' , book:@bookk, categories:@categories %>
+
+    </div>
+    <div class ="col-md-8 offset-md-1" id="books">
+
+       <%= render 'books/index', books:@books %>
+
+    </div>
+ </div>
+</div>

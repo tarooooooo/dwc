@@ -1,0 +1,8 @@
+<p>検索ワード: <%= @word %></p>
+<% if @books.present? %>
+  <% @books.each do |book| %>
+    <%= book.title %>
+  <% end %>
+<% else %>
+  <p>検索タグの結果がありません。</p>
+<% end %>

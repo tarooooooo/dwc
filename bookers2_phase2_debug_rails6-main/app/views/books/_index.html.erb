@@ -1,0 +1,86 @@
+<h2>Books</h2>
+
+   <%#= link_to "新着順", books_path(sort_word: "new")  %>
+   <%= link_to "新着順", books_path(sort: 'created_at DESC') %>
+   <span>|</span>
+   <%#= link_to "評価の高い順" , books_path(sort_word: "rate") %>
+   <%= link_to "評価が高い順", books_path(sort: 'rate DESC') %>
+
+<table class="table table-hover table-inverse">
+  <therd>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Opinion</th>
+      <th>Category</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </therd>
+
+  <% books.each do |book| %>
+  <tbody>
+    <tr>
+
+      <td>
+      <%= link_to user_path(book.user.id) do %>
+      <%#= attachment_image_tag book.user, :profile_image, size: "40x40", format: 'jpeg', fallback: "no_image.jpg"%>
+      <% end %>
+      </td>
+
+      <td>
+        <%= link_to book_path(book.id) do %>
+        <%= book.title %>
+        <% end %>
+      </td>
+
+      <td>
+        <%= book.body %>
+      </td>
+
+      <td>
+        <%= link_to book.category.name, category_search_path(category_word: book.category.name) %>
+      </td>
+
+      <td id ="Favorites-buttons<%= book.id%>">
+       <%= render partial: "favorites/like", locals: { book: book }%>
+     </td>
+
+      <td class ='example'>
+        コメント数：<%=book.book_comments.count %>
+      </td>
+      <td>
+        閲覧数: <%= book.impressionist_count(:filter=>:session_hash) %>
+      </td>
+
+      <td>
+
+        <div id="star_<%= book.id %>"></div>
+        <script>
+            $(document).on('turbolinks:load', function() {
+                let elem = document.querySelector('#star_<%= book.id %>');
+                if (elem == null) return;
+
+                elem.innerHTML = "";
+                let opt = {
+                    starOn: "<%= asset_path('star-on.png') %>",
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    score: "<%= book.rate %>",
+                    readOnly: true,
+            };
+                raty(elem, opt);
+            });
+        </script>
+      </td>
+      <td>
+        <% book.tags.each do |tag| %>
+          <%= link_to tag.name, search_tags_path(word: tag.name) %>
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+  <% end %>
+</table>
